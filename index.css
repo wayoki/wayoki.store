@@ -1,5 +1,13 @@
 /* Almost entirely ai generated ;) */
 
+@font-face {
+    font-family: "CustomFont";
+    src: url("./customFont.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -14,6 +22,7 @@ body {
     justify-content: center;
     align-items: center;
     color: #fff;
+    font-family: "CustomFont", monospace;
 }
 
 body::before {
@@ -108,7 +117,7 @@ body::after {
     align-items: center;
     color: #fff;
     font-size: 56px;
-    font-family: monospace;
+    font-family: "CustomFont", monospace;
     line-height: 1;
     letter-spacing: 0.05em;
     white-space: nowrap;
@@ -159,7 +168,7 @@ body::after {
     display: inline-block;
     color: rgba(255, 255, 255, 0.9);
     font-size: 24px;
-    font-family: monospace;
+    font-family: "CustomFont", monospace;
     line-height: 1;
     letter-spacing: 0.08em;
     white-space: nowrap;
