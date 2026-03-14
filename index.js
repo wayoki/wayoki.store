@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     intro.style.minHeight = `${height}px`;
 
     if (!isMobile) {
-      introContent.style.transform = "translateY(20px)";
+      introContent.style.transform = "translateY(-100%)";
       introContent.style.gap = "24px";
       introContent.style.padding = "";
       introContent.style.width = "";
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const titleSize = Math.max(30, Math.min(56, safeWidth * 0.12));
     const loadingSize = Math.max(16, Math.min(24, safeWidth * 0.05));
 
-    introContent.style.transform = "translateY(0)";
+    introContent.style.transform = "translateY(-150%)";
     introContent.style.gap = "16px";
     introContent.style.padding = "0 16px";
     introContent.style.width = `${safeWidth}px`;
