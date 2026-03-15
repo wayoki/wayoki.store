@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const typingSpeed = 250;
   const loadingFrameDelay = 800;
   const jitterResetDelay = 130;
+  const transitionDelay = 20000;
+  const photoModeDuration = 15000;
+  let isPhotoMode = false;
 
   if (!intro || !introContent || !typing || !loading || !cursor || !siteTarget || !loadingTarget) {
     return;
@@ -64,6 +67,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function triggerCrtJitter() {
+    if (isPhotoMode) {
+      return;
+    }
+
     const x = (Math.random() - 0.5) * 4.8;
     const y = (Math.random() - 0.5) * 2.4;
     typing.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
@@ -76,6 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function triggerSplitGlitch() {
+    if (isPhotoMode) {
+      return;
+    }
+
     siteTarget.classList.remove("glitch-split");
     void siteTarget.offsetWidth;
     siteTarget.classList.add("glitch-split");
@@ -84,14 +95,46 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 170);
   }
 
-  function scheduleCrtJitter() {
+  function triggerPhotoSplitGlitch() {
+    siteTarget.classList.remove("photo-glitch-split");
+    void siteTarget.offsetWidth;
+    siteTarget.classList.add("photo-glitch-split");
+    setTimeout(() => {
+      siteTarget.classList.remove("photo-glitch-split");
+    }, 220);
+  }
+
+  function triggerPhotoJitter() {
+    const x = (Math.random() - 0.5) * 4.2;
+    const y = (Math.random() - 0.5) * 2.8;
+    typing.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
+    loading.style.translate = `${(x * 0.82).toFixed(2)}px ${(y * 0.82).toFixed(2)}px`;
+    typing.style.opacity = `${0.91 + Math.random() * 0.09}`;
+    loading.style.opacity = `${0.88 + Math.random() * 0.1}`;
+
+    setTimeout(() => {
+      resetJitter();
+    }, 260);
+  }
+
+  function scheduleJitter() {
     const nextDelay = 1100 + Math.random() * 1800;
     setTimeout(() => {
-      triggerCrtJitter();
-      if (Math.random() > 0.45) {
+      if (isPhotoMode) {
+        triggerPhotoJitter();
+      } else {
+        triggerCrtJitter();
+      }
+
+      if (!isPhotoMode && Math.random() > 0.45) {
         triggerSplitGlitch();
       }
-      scheduleCrtJitter();
+
+      if (isPhotoMode && Math.random() > 0.35) {
+        triggerPhotoSplitGlitch();
+      }
+
+      scheduleJitter();
     }, nextDelay);
   }
 
@@ -130,11 +173,27 @@ document.addEventListener("DOMContentLoaded", () => {
     window.visualViewport.addEventListener("resize", applyResponsiveLayout);
   }
 
-  scheduleCrtJitter();
+  scheduleJitter();
 
   typeText(siteTarget, siteText, () => {
     typeText(loadingTarget, loadingText, () => {
       setTimeout(() => startLoadingAnimation(1), loadingFrameDelay);
     });
   });
+
+  setTimeout(() => {
+    isPhotoMode = true;
+    resetJitter();
+    siteTarget.classList.remove("glitch-split");
+    siteTarget.classList.remove("photo-glitch-split");
+    document.body.classList.add("photo-mode");
+  }, transitionDelay);
+
+  setTimeout(() => {
+    isPhotoMode = false;
+    resetJitter();
+    siteTarget.classList.remove("photo-glitch-split");
+    siteTarget.classList.remove("glitch-split");
+    document.body.classList.remove("photo-mode");
+  }, transitionDelay + photoModeDuration);
 });
