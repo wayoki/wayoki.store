@@ -2,7 +2,15 @@
 
 @font-face {
     font-family: "CustomFont";
-    src: url("./customFont.ttf") format("truetype");
+    src: url("./fonts/customFont.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "CustomJapaneseFont";
+    src: url("./fonts/customJapaneseFont.ttf") format("truetype");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -23,7 +31,7 @@ body {
     align-items: center;
     color: #fff;
     font-family: "CustomFont", monospace;
-    transition: background-color 900ms ease, color 900ms ease;
+    transition: background-color 1800ms cubic-bezier(0.22, 1, 0.36, 1), color 1800ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body::before {
@@ -43,7 +51,7 @@ body::before {
             transparent 4px
         );
     opacity: 0.28;
-    transition: opacity 900ms ease, background 900ms ease, transform 900ms ease;
+    transition: opacity 1800ms ease, background 1800ms ease, transform 1800ms ease, filter 1800ms ease;
 }
 
 body::after {
@@ -59,7 +67,7 @@ body::after {
             rgba(0, 0, 0, 0.22) 78%,
             rgba(0, 0, 0, 0.5) 100%
         );
-    transition: opacity 900ms ease, background 900ms ease;
+    transition: opacity 1800ms ease, background 1800ms ease;
 }
 
 .intro {
@@ -73,7 +81,7 @@ body::after {
     background:
         radial-gradient(circle at center, rgba(255, 255, 255, 0.025) 0%, rgba(0, 0, 0, 0) 48%),
         #000;
-    transition: background 900ms ease;
+    transition: background 1800ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .intro::before {
@@ -92,7 +100,7 @@ body::after {
     );
     opacity: 0.2;
     animation: crt-sweep 8.4s linear infinite;
-    transition: opacity 900ms ease;
+    transition: opacity 1800ms ease;
 }
 
 .intro::after {
@@ -104,7 +112,7 @@ body::after {
     background: rgba(255, 255, 255, 0.015);
     opacity: 0.45;
     animation: screen-flicker 6s linear infinite;
-    transition: opacity 900ms ease, background 900ms ease;
+    transition: opacity 1800ms ease, background 1800ms ease;
 }
 
 .intro-content {
@@ -132,7 +140,7 @@ body::after {
         0 0 18px rgba(255, 255, 255, 0.1),
         0 0 30px rgba(255, 255, 255, 0.05);
     will-change: transform, opacity;
-    transition: color 900ms ease, text-shadow 900ms ease;
+    transition: color 1800ms ease, text-shadow 1800ms ease;
 }
 
 #site {
@@ -170,7 +178,7 @@ body::after {
     background: #fff;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.14);
     animation: blink 1.5s steps(1, end) infinite;
-    transition: background-color 900ms ease, box-shadow 900ms ease;
+    transition: background-color 1800ms ease, box-shadow 1800ms ease;
 }
 
 .loading {
@@ -186,7 +194,7 @@ body::after {
         0 0 4px rgba(255, 255, 255, 0.12),
         0 0 10px rgba(255, 255, 255, 0.04);
     will-change: transform, opacity;
-    transition: color 900ms ease, text-shadow 900ms ease;
+    transition: color 1800ms ease, text-shadow 1800ms ease;
 }
 
 #loading {
@@ -196,6 +204,86 @@ body::after {
 .content {
     min-height: 100vh;
     background: #050505;
+}
+
+.media-link {
+    position: fixed;
+    left: 50%;
+    bottom: 42px;
+    z-index: 6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    color: #d31717;
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(10px);
+    text-shadow:
+        0 0 8px rgba(211, 23, 23, 0.24),
+        0 0 18px rgba(211, 23, 23, 0.12);
+    transition:
+        opacity 700ms ease,
+        transform 700ms ease,
+        color 1200ms ease,
+        text-shadow 1200ms ease;
+}
+
+.media-link:hover,
+.media-link:focus-visible {
+    transform: translateX(-50%) translateY(-2px);
+}
+
+.media-link-jp {
+    display: inline-block;
+    font-family: "CustomJapaneseFont", "CustomFont", monospace;
+    line-height: 1;
+    text-transform: none;
+    transform: translateY(-2px);
+    animation: media-link-glitch 1.9s steps(3, end) infinite;
+    will-change: transform, opacity;
+}
+
+.media-link:hover .media-link-jp,
+.media-link:focus-visible .media-link-jp {
+    animation-duration: 950ms;
+}
+
+body.media-link-visible .media-link {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+body.photo-mode .media-link {
+    color: #d31717;
+    text-shadow:
+        0 0 5px rgba(211, 23, 23, 0.16),
+        0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+body:not(.photo-mode) .media-link {
+    text-shadow:
+        0 0 10px rgba(211, 23, 23, 0.3),
+        0 0 20px rgba(211, 23, 23, 0.2);
+}
+
+@media (max-width: 768px) {
+    .media-link {
+        bottom: 30px;
+        font-size: 16px;
+        letter-spacing: 0.06em;
+        padding: 6px 10px;
+    }
+
+    .media-link-jp {
+        transform: translateY(-1px);
+    }
 }
 
 body.photo-mode {
@@ -225,9 +313,11 @@ body.photo-mode::before {
         ),
         linear-gradient(0deg, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.54));
     background-size: 130px 130px, 165px 165px, 95px 95px, 145px 145px, 26px 26px, 32px 32px, 100% 100%;
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
     opacity: 0.98;
     transform: scale(1.08);
-    animation: digital-noise 220ms steps(2, end) infinite;
+    filter: contrast(1.08) brightness(1.02);
+    animation: digital-noise 220ms steps(2, end) infinite, photo-grain-drift 1.35s steps(5, end) infinite;
 }
 
 body.photo-mode::after {
@@ -383,5 +473,53 @@ body.photo-mode .content {
     100% {
         transform: translate3d(-0.4%, 0.1%, 0) scale(1.08);
         filter: contrast(1.03) brightness(1.01);
+    }
+}
+
+@keyframes photo-grain-drift {
+    0% {
+        background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+    20% {
+        background-position: -9px 5px, 8px -6px, -5px 7px, 7px 3px, 2px -1px, -3px 2px, 0 0;
+    }
+    40% {
+        background-position: 6px -7px, -10px 4px, 4px -6px, -8px -2px, -2px 3px, 2px -2px, 0 0;
+    }
+    60% {
+        background-position: -4px 8px, 6px 6px, -8px -3px, 5px -7px, 3px 1px, -2px -3px, 0 0;
+    }
+    80% {
+        background-position: 10px -3px, -7px -8px, 7px 5px, -4px 8px, -1px -2px, 3px 2px, 0 0;
+    }
+    100% {
+        background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+}
+
+@keyframes media-link-glitch {
+    0%, 74%, 100% {
+        transform: translateY(-2px) translateX(0);
+        opacity: 1;
+    }
+    76% {
+        transform: translateY(-2px) translateX(-2px);
+        opacity: 0.88;
+    }
+    80% {
+        transform: translateY(-1px) translateX(1.5px);
+        opacity: 1;
+    }
+    84% {
+        transform: translateY(-3px) translateX(-1px);
+        opacity: 0.9;
+    }
+    89% {
+        transform: translateY(-2px) translateX(2px);
+        opacity: 0.96;
+    }
+    94% {
+        transform: translateY(-3px) translateX(-0.5px);
+        opacity: 1;
     }
 }

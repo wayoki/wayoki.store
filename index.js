@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cursor = document.querySelector(".cursor");
   const siteTarget = document.getElementById("site");
   const loadingTarget = document.getElementById("loading");
+  const mediaLink = document.querySelector(".media-link");
 
   const siteText = "WAYOKI.STORE";
   const loadingText = "Loading";
@@ -17,7 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const photoModeDuration = 15000;
   let isPhotoMode = false;
 
-  if (!intro || !introContent || !typing || !loading || !cursor || !siteTarget || !loadingTarget) {
+  let hasShownMediaLink = false;
+
+  if (!intro || !introContent || !typing || !loading || !cursor || !siteTarget || !loadingTarget || !mediaLink) {
     return;
   }
 
@@ -117,6 +120,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 260);
   }
 
+  function setPhotoMode(nextPhotoMode) {
+    isPhotoMode = nextPhotoMode;
+    resetJitter();
+    siteTarget.classList.remove("glitch-split");
+    siteTarget.classList.remove("photo-glitch-split");
+    document.body.classList.toggle("photo-mode", nextPhotoMode);
+
+    if (nextPhotoMode && !hasShownMediaLink) {
+      hasShownMediaLink = true;
+      document.body.classList.add("media-link-visible");
+    }
+  }
+
+  function scheduleModeCycle(delay) {
+    setTimeout(() => {
+      const nextPhotoMode = !isPhotoMode;
+      setPhotoMode(nextPhotoMode);
+      scheduleModeCycle(nextPhotoMode ? photoModeDuration : transitionDelay);
+    }, delay);
+  }
+
   function scheduleJitter() {
     const nextDelay = 1100 + Math.random() * 1800;
     setTimeout(() => {
@@ -181,19 +205,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  setTimeout(() => {
-    isPhotoMode = true;
-    resetJitter();
-    siteTarget.classList.remove("glitch-split");
-    siteTarget.classList.remove("photo-glitch-split");
-    document.body.classList.add("photo-mode");
-  }, transitionDelay);
-
-  setTimeout(() => {
-    isPhotoMode = false;
-    resetJitter();
-    siteTarget.classList.remove("photo-glitch-split");
-    siteTarget.classList.remove("glitch-split");
-    document.body.classList.remove("photo-mode");
-  }, transitionDelay + photoModeDuration);
+  scheduleModeCycle(transitionDelay);
 });
