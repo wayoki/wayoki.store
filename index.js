@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingFrameDelay = 800;
   const jitterResetDelay = 130;
   const transitionDelay = 20000;
-  const photoModeDuration = 15000;
+  const photoModeDuration = 20000;
   let isPhotoMode = false;
 
   let hasShownMediaLink = false;
