@@ -14,8 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const typingSpeed = 250;
   const loadingFrameDelay = 800;
   const jitterResetDelay = 130;
-  const transitionDelay = 20000;
-  const photoModeDuration = 20000;
+  const dotCycleDuration = loadingFrameDelay * 4;
+  const repeatedTransitionDelay = dotCycleDuration * 2;
+  const initialTransitionDelay =
+    (siteText.length + loadingText.length) * typingSpeed +
+    repeatedTransitionDelay;
   let isPhotoMode = false;
 
   let hasShownMediaLink = false;
@@ -137,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       const nextPhotoMode = !isPhotoMode;
       setPhotoMode(nextPhotoMode);
-      scheduleModeCycle(nextPhotoMode ? photoModeDuration : transitionDelay);
+      scheduleModeCycle(repeatedTransitionDelay);
     }, delay);
   }
 
@@ -205,5 +208,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  scheduleModeCycle(transitionDelay);
+  scheduleModeCycle(initialTransitionDelay);
 });
