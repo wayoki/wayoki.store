@@ -14,11 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const typingSpeed = 250;
   const loadingFrameDelay = 800;
   const jitterResetDelay = 130;
-  const dotCycleDuration = loadingFrameDelay * 4;
-  const repeatedTransitionDelay = dotCycleDuration * 2;
-  const initialTransitionDelay =
-    (siteText.length + loadingText.length) * typingSpeed +
-    repeatedTransitionDelay;
+  const maxDots = 3;
   let isPhotoMode = false;
 
   let hasShownMediaLink = false;
@@ -136,14 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function scheduleModeCycle(delay) {
-    setTimeout(() => {
-      const nextPhotoMode = !isPhotoMode;
-      setPhotoMode(nextPhotoMode);
-      scheduleModeCycle(repeatedTransitionDelay);
-    }, delay);
-  }
-
   function scheduleJitter() {
     const nextDelay = 1100 + Math.random() * 1800;
     setTimeout(() => {
@@ -170,7 +158,13 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingTarget.textContent = loadingText + dots;
 
     setTimeout(() => {
-      startLoadingAnimation((frameIndex + 1) % 4);
+      const nextFrameIndex = frameIndex >= maxDots ? 1 : frameIndex + 1;
+
+      if (frameIndex >= maxDots) {
+        setPhotoMode(!isPhotoMode);
+      }
+
+      startLoadingAnimation(nextFrameIndex);
     }, loadingFrameDelay);
   }
 
@@ -207,6 +201,4 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => startLoadingAnimation(1), loadingFrameDelay);
     });
   });
-
-  scheduleModeCycle(initialTransitionDelay);
 });
